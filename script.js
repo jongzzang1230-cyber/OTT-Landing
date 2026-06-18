@@ -98,6 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initModal();
   initParticleCanvas();
   initHeroButtons();
+  initAuthState();
   initScrollIndicator();
 });
 
@@ -284,6 +285,44 @@ function initModal() {
   document.querySelector('.modal-add-btn').addEventListener('click', () => {
     showToast('✓ 내 목록에 추가되었습니다');
   });
+}
+
+/* ---------- Auth State ------------------------------------- */
+function initAuthState() {
+  const user = JSON.parse(localStorage.getItem('sb_user') || 'null');
+  const guest  = document.getElementById('navGuest');
+  const userEl = document.getElementById('navUser');
+
+  if (user) {
+    guest.style.display  = 'none';
+    userEl.style.display = 'flex';
+    document.getElementById('navWelcome').textContent =
+      `환영합니다! ${user.nickname}`;
+  } else {
+    guest.style.display  = 'flex';
+    userEl.style.display = 'none';
+  }
+
+  /* 드롭다운 토글 */
+  const iconBtn  = document.getElementById('userIconBtn');
+  const dropdown = document.getElementById('userDropdown');
+  if (iconBtn) {
+    iconBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropdown.classList.toggle('open');
+    });
+    document.addEventListener('click', () => dropdown.classList.remove('open'));
+  }
+
+  /* 로그아웃 */
+  const logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem('sb_user');
+      showToast('로그아웃 되었습니다');
+      setTimeout(() => location.reload(), 900);
+    });
+  }
 }
 
 function openModal(data) {

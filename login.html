@@ -334,9 +334,11 @@
       }
       if (!valid) return;
 
-      /* 로딩 상태 → 홈으로 이동 시뮬레이션 */
+      /* 로딩 상태 → localStorage 저장 → 홈으로 이동 */
       loginBtn.classList.add('loading');
       setTimeout(() => {
+        const nickname = email.split('@')[0];
+        localStorage.setItem('sb_user', JSON.stringify({ email, nickname }));
         window.location.href = 'index.html';
       }, 1400);
     });

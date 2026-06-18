@@ -25,8 +25,30 @@
         <li><a href="#recommended" class="nav-link">추천</a></li>
       </ul>
       <div class="nav-actions">
-        <button class="btn-outline-sm" id="loginBtn">로그인</button>
-        <button class="btn-primary-sm" id="trialBtn">무료 체험</button>
+        <!-- 비로그인 상태 -->
+        <div class="nav-guest" id="navGuest">
+          <button class="btn-outline-sm" id="loginBtn">로그인</button>
+          <button class="btn-primary-sm" id="trialBtn">무료 체험</button>
+        </div>
+        <!-- 로그인 상태 -->
+        <div class="nav-user" id="navUser">
+          <span class="nav-welcome" id="navWelcome"></span>
+          <div class="user-btn-wrap">
+            <button class="user-icon-btn" id="userIconBtn" aria-label="내 계정">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="8" r="4"/>
+                <path d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/>
+              </svg>
+            </button>
+            <div class="user-dropdown" id="userDropdown">
+              <a href="#" class="dropdown-item">👤 프로필</a>
+              <a href="#" class="dropdown-item">📋 내 목록</a>
+              <a href="#" class="dropdown-item">⚙️ 설정</a>
+              <div class="dropdown-divider"></div>
+              <button class="dropdown-item logout-item" id="logoutBtn">🚪 로그아웃</button>
+            </div>
+          </div>
+        </div>
         <button class="hamburger" id="hamburger" aria-label="메뉴 열기">
           <span></span><span></span><span></span>
         </button>
