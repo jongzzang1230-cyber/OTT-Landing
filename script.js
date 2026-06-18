@@ -384,10 +384,12 @@ function initScrollIndicator() {
 
 /* ---------- Mockup Cards random position + content --------- */
 function initMockupCards() {
-  const mockup = document.querySelector('.hero-mockup');
-  const c1     = document.querySelector('.mockup-card.c1');
-  const c2     = document.querySelector('.mockup-card.c2');
-  if (!c1 || !c2 || !mockup) return;
+  const mockup  = document.querySelector('.hero-mockup');
+  const c1      = document.querySelector('.mockup-card.c1');
+  const c2      = document.querySelector('.mockup-card.c2');
+  const detail  = document.getElementById('mockupDetail');
+  const mdClose = document.getElementById('mdClose');
+  if (!c1 || !c2 || !mockup || !detail) return;
 
   const CW = 130, CH = 114, PAD = 6;
   const ROTS = [-11, -8, -6, -5, 5, 6, 8, 11];
@@ -395,30 +397,61 @@ function initMockupCards() {
   function getSlots() {
     const mw = mockup.offsetWidth, mh = mockup.offsetHeight;
     return [
-      { top: PAD,               left: PAD },
-      { top: PAD,               left: mw - CW - PAD },
-      { top: (mh - CH) / 2,    left: PAD },
-      { top: (mh - CH) / 2,    left: mw - CW - PAD },
-      { top: mh - CH - PAD,    left: PAD },
-      { top: mh - CH - PAD,    left: mw - CW - PAD },
+      { top: PAD,            left: PAD },
+      { top: PAD,            left: mw - CW - PAD },
+      { top: (mh-CH)/2,     left: PAD },
+      { top: (mh-CH)/2,     left: mw - CW - PAD },
+      { top: mh-CH-PAD,     left: PAD },
+      { top: mh-CH-PAD,     left: mw - CW - PAD },
     ];
   }
 
   const state = [
-    { el: c1, img: c1.querySelector('.mc-img'), span: c1.querySelector('.mc-info span'), rot: -8 },
-    { el: c2, img: c2.querySelector('.mc-img'), span: c2.querySelector('.mc-info span'), rot: 7 },
+    { el: c1, img: c1.querySelector('.mc-img'), span: c1.querySelector('.mc-info span'), rot: -8, data: null },
+    { el: c2, img: c2.querySelector('.mc-img'), span: c2.querySelector('.mc-info span'), rot: 7,  data: null },
   ];
 
-  /* 호버 시 현재 rotation 유지하며 scale */
-  state.forEach(s => {
-    s.el.addEventListener('mouseenter', () => {
-      s.el.style.transform = `rotate(${s.rot}deg) scale(1.1)`;
-    });
-    s.el.addEventListener('mouseleave', () => {
-      s.el.style.transform = `rotate(${s.rot}deg)`;
-    });
+  /* ── 상세보기 열기 / 닫기 ── */
+  function openDetail(s) {
+    const d = s.data;
+    if (!d || detail.classList.contains('open')) return;
+
+    const mRect = mockup.getBoundingClientRect();
+    const cRect = s.el.getBoundingClientRect();
+    const ox = ((cRect.left + cRect.width  / 2 - mRect.left) / mRect.width  * 100).toFixed(1) + '%';
+    const oy = ((cRect.top  + cRect.height / 2 - mRect.top)  / mRect.height * 100).toFixed(1) + '%';
+    detail.style.transformOrigin = `${ox} ${oy}`;
+
+    document.getElementById('mdImg').src           = d.img;
+    document.getElementById('mdImg').alt           = d.title;
+    document.getElementById('mdGenre').textContent = d.genre   || '';
+    document.getElementById('mdTitle').textContent = d.title;
+    document.getElementById('mdMeta').innerHTML    =
+      [d.rating && `⭐ ${d.rating}`, d.year, d.duration, d.age]
+        .filter(Boolean).map(m => `<span>${m}</span>`).join('');
+    document.getElementById('mdDesc').textContent  = d.desc    || '';
+
+    detail.classList.add('open');
+  }
+
+  function closeDetail() { detail.classList.remove('open'); }
+
+  mdClose.addEventListener('click', closeDetail);
+  document.getElementById('mdPlay').addEventListener('click', () => {
+    closeDetail(); showToast('▶ 재생을 시작합니다...');
+  });
+  document.getElementById('mdAdd').addEventListener('click', () => {
+    showToast('✓ 내 목록에 추가되었습니다');
   });
 
+  /* ── 호버 + 클릭 ── */
+  state.forEach(s => {
+    s.el.addEventListener('mouseenter', () => { s.el.style.transform = `rotate(${s.rot}deg) scale(1.1)`; });
+    s.el.addEventListener('mouseleave', () => { s.el.style.transform = `rotate(${s.rot}deg)`; });
+    s.el.addEventListener('click',      () => openDetail(s));
+  });
+
+  /* ── 포지션 / 콘텐츠 적용 ── */
   function applyPos(s, pos, rot) {
     s.rot = rot;
     s.el.style.top       = pos.top  + 'px';
@@ -427,16 +460,17 @@ function initMockupCards() {
   }
 
   function applyContent(s, data) {
+    s.data = data;
     s.el.style.opacity = '0';
     setTimeout(() => {
-      s.img.src          = data.img;
-      s.img.alt          = data.title;
+      s.img.src = data.img; s.img.alt = data.title;
       s.span.textContent = data.title;
       s.el.style.opacity = '1';
     }, 460);
   }
 
   function randomize(withContent) {
+    closeDetail();
     const slots = [...getSlots()].sort(() => Math.random() - .5);
     const rots  = [...ROTS].sort(() => Math.random() - .5);
     const data  = [...CONTENT_DATA].sort(() => Math.random() - .5);
@@ -446,11 +480,14 @@ function initMockupCards() {
     });
   }
 
-  /* 초기 배치: 트랜지션 없이 즉시 위치 설정 */
+  /* ── 초기 배치 (트랜지션 없이) ── */
   state.forEach(s => { s.el.style.transition = 'none'; s.el.style.opacity = '0'; });
-  randomize(false);
-  const initData = [...CONTENT_DATA].sort(() => Math.random() - .5);
+  const initSlots = [...getSlots()].sort(() => Math.random() - .5);
+  const initRots  = [...ROTS].sort(() => Math.random() - .5);
+  const initData  = [...CONTENT_DATA].sort(() => Math.random() - .5);
   state.forEach((s, i) => {
+    applyPos(s, initSlots[i], initRots[i]);
+    s.data = initData[i];
     s.img.src = initData[i].img; s.img.alt = initData[i].title;
     s.span.textContent = initData[i].title;
   });
