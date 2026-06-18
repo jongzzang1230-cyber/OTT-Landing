@@ -458,6 +458,8 @@
     </div>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
   <script>
     /* ── 유틸 ── */
     const $ = id => document.getElementById(id);
@@ -595,26 +597,39 @@
 
     $('back3').addEventListener('click', () => goStep(2));
 
-    $('submitBtn').addEventListener('click', () => {
+    $('submitBtn').addEventListener('click', async () => {
       const req = [$('term1').checked, $('term2').checked];
       if (!req.every(Boolean)) {
         setMsg($('termMsg'),'필수 약관에 모두 동의해 주세요','error'); return;
       }
       setMsg($('termMsg'),'','');
 
-      const btn = $('submitBtn');
+      const btn      = $('submitBtn');
+      const email    = $('email').value.trim();
+      const pw       = $('pw').value;
+      const nickname = ($('lastName').value.trim() + $('firstName').value.trim()) || '회원';
+
       btn.classList.add('loading');
-      setTimeout(() => {
+
+      const { error } = await _supabase.auth.signUp({
+        email,
+        password: pw,
+        options: { data: { nickname } }
+      });
+
+      if (error) {
         btn.classList.remove('loading');
-        // 스텝 숨기고 완료 화면 표시
-        document.getElementById('steps').style.display = 'none';
-        ['panel1','panel2','panel3'].forEach(id => $( id).classList.remove('active'));
-        const name = ($('lastName').value + $('firstName').value) || '회원';
-        $('welcomeMsg').innerHTML =
-          `<strong style="color:#fff">${name}</strong>님, StreamBlue 회원이 되셨습니다.<br />지금 바로 무한한 콘텐츠를 즐겨보세요.`;
-        $('successPanel').classList.add('active');
-        document.querySelector('.login-row').style.display = 'none';
-      }, 1500);
+        setMsg($('termMsg'), error.message, 'error');
+        return;
+      }
+
+      btn.classList.remove('loading');
+      document.getElementById('steps').style.display = 'none';
+      ['panel1','panel2','panel3'].forEach(id => $(id).classList.remove('active'));
+      $('welcomeMsg').innerHTML =
+        `<strong style="color:#fff">${nickname}</strong>님, StreamBlue 회원이 되셨습니다.<br />지금 바로 무한한 콘텐츠를 즐겨보세요.`;
+      $('successPanel').classList.add('active');
+      document.querySelector('.login-row').style.display = 'none';
     });
 
     $('goLogin').addEventListener('click', () => {

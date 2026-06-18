@@ -311,6 +311,8 @@
     </div>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
   <script>
     /* 비밀번호 표시/숨기기 */
     const pwInput = document.getElementById('password');
@@ -337,7 +339,7 @@
     const loginBtn = document.getElementById('loginBtn');
     const pwMsg    = document.getElementById('pwMsg');
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const email = emailInput.value.trim();
       const pw    = pwInput.value;
@@ -357,13 +359,18 @@
       }
       if (!valid) return;
 
-      /* 로딩 상태 → localStorage 저장 → 홈으로 이동 */
       loginBtn.classList.add('loading');
-      setTimeout(() => {
-        const nickname = email.split('@')[0];
-        localStorage.setItem('sb_user', JSON.stringify({ email, nickname }));
-        window.location.href = 'index.html';
-      }, 1400);
+
+      const { error } = await _supabase.auth.signInWithPassword({ email, password: pw });
+
+      if (error) {
+        loginBtn.classList.remove('loading');
+        emailMsg.textContent = '이메일 또는 비밀번호가 올바르지 않습니다.';
+        emailMsg.className   = 'field-msg error';
+        return;
+      }
+
+      window.location.href = 'index.html';
     });
 
     /* 소셜 로그인 버튼 (데모) */

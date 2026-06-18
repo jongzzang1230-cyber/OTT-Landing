@@ -288,20 +288,29 @@ function initModal() {
 }
 
 /* ---------- Auth State ------------------------------------- */
-function initAuthState() {
-  const user = JSON.parse(localStorage.getItem('sb_user') || 'null');
-  const guest  = document.getElementById('navGuest');
-  const userEl = document.getElementById('navUser');
+async function initAuthState() {
+  const guest   = document.getElementById('navGuest');
+  const userEl  = document.getElementById('navUser');
+  const welcome = document.getElementById('navWelcome');
 
-  if (user) {
+  function applyUser(user) {
+    const nickname = user.user_metadata?.nickname || user.email.split('@')[0];
     guest.style.display  = 'none';
     userEl.style.display = 'flex';
-    document.getElementById('navWelcome').textContent =
-      `환영합니다! ${user.nickname}`;
-  } else {
+    welcome.textContent  = `환영합니다! ${nickname}`;
+  }
+
+  function applyGuest() {
     guest.style.display  = 'flex';
     userEl.style.display = 'none';
   }
+
+  const { data: { session } } = await _supabase.auth.getSession();
+  session?.user ? applyUser(session.user) : applyGuest();
+
+  _supabase.auth.onAuthStateChange((_event, session) => {
+    session?.user ? applyUser(session.user) : applyGuest();
+  });
 
   /* 드롭다운 토글 */
   const iconBtn  = document.getElementById('userIconBtn');
@@ -317,8 +326,8 @@ function initAuthState() {
   /* 로그아웃 */
   const logoutBtn = document.getElementById('logoutBtn');
   if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => {
-      localStorage.removeItem('sb_user');
+    logoutBtn.addEventListener('click', async () => {
+      await _supabase.auth.signOut();
       showToast('로그아웃 되었습니다');
       setTimeout(() => location.reload(), 900);
     });
