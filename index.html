@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StreamBlue - 스트리밍의 새로운 기준</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header" id="header">
+    <nav class="nav">
+      <a href="#home" class="nav-logo">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <circle cx="14" cy="14" r="14" fill="#1e90ff"/>
+          <polygon points="11,8 22,14 11,20" fill="#fff"/>
+        </svg>
+        <span>StreamBlue</span>
+      </a>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="#home" class="nav-link">홈</a></li>
+        <li><a href="#content" class="nav-link">콘텐츠</a></li>
+        <li><a href="#featured" class="nav-link">특집</a></li>
+        <li><a href="#recommended" class="nav-link">추천</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="btn-outline-sm" id="loginBtn">로그인</button>
+        <button class="btn-primary-sm" id="trialBtn">무료 체험</button>
+        <button class="hamburger" id="hamburger" aria-label="메뉴 열기">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ========== HERO ========== -->
+  <section class="hero" id="home">
+    <div class="hero-bg">
+      <div class="hero-orb orb1"></div>
+      <div class="hero-orb orb2"></div>
+      <div class="hero-orb orb3"></div>
+      <canvas id="particleCanvas"></canvas>
+    </div>
+    <div class="hero-content animate-on-scroll">
+      <div class="hero-badge">
+        <span class="badge-dot"></span> 신규 오리지널 공개
+      </div>
+      <h1 class="hero-title">
+        무한한 이야기가<br />
+        <span class="hero-highlight">당신을 기다립니다</span>
+      </h1>
+      <p class="hero-desc">
+        StreamBlue에서 수천 편의 영화, 드라마, 다큐멘터리를<br />
+        광고 없이, 어디서든, 언제든 즐기세요.
+      </p>
+      <div class="hero-cta">
+        <button class="btn-hero-primary" id="heroWatchBtn">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><polygon points="4,2 16,9 4,16" fill="#fff"/></svg>
+          지금 바로 시청
+        </button>
+        <button class="btn-hero-secondary" id="heroExploreBtn">콘텐츠 둘러보기</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <strong>10,000+</strong>
+          <span>콘텐츠</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <strong>4K UHD</strong>
+          <span>화질 지원</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <strong>5개</strong>
+          <span>동시 재생</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-mockup">
+      <div class="mockup-screen">
+        <div class="mockup-inner">
+          <div class="mockup-play">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true"><polygon points="10,5 36,20 10,35" fill="#fff"/></svg>
+          </div>
+          <div class="mockup-bar"></div>
+          <div class="mockup-bar short"></div>
+        </div>
+      </div>
+      <div class="mockup-card c1">
+        <div class="mc-img g1"></div>
+        <div class="mc-info"><span>다크 나이트</span></div>
+      </div>
+      <div class="mockup-card c2">
+        <div class="mc-img g3"></div>
+        <div class="mc-info"><span>우주의 끝</span></div>
+      </div>
+    </div>
+    <div class="scroll-indicator" id="scrollIndicator">
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ========== CONTENT GRID ========== -->
+  <section class="content-section" id="content">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <h2 class="section-title">인기 콘텐츠</h2>
+        <p class="section-desc">지금 가장 많이 시청되는 작품들을 만나보세요</p>
+        <div class="filter-tabs" id="filterTabs" role="tablist">
+          <button class="filter-tab active" data-filter="all" role="tab">전체</button>
+          <button class="filter-tab" data-filter="action" role="tab">액션</button>
+          <button class="filter-tab" data-filter="drama" role="tab">드라마</button>
+          <button class="filter-tab" data-filter="comedy" role="tab">코미디</button>
+          <button class="filter-tab" data-filter="sci-fi" role="tab">SF</button>
+        </div>
+      </div>
+      <div class="content-grid" id="contentGrid"></div>
+    </div>
+  </section>
+
+  <!-- ========== FEATURED SECTION ========== -->
+  <section class="featured-section" id="featured">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <h2 class="section-title light">이달의 특집</h2>
+        <p class="section-desc light">StreamBlue가 엄선한 최고의 작품</p>
+      </div>
+      <div class="featured-banner animate-on-scroll">
+        <div class="featured-visual">
+          <div class="featured-poster g-featured">
+            <div class="featured-play-btn" id="featuredPlayBtn">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true"><polygon points="8,4 28,16 8,28" fill="#fff"/></svg>
+            </div>
+            <div class="featured-label">ORIGINAL</div>
+          </div>
+        </div>
+        <div class="featured-info">
+          <span class="featured-badge-tag">🏆 이달의 추천작</span>
+          <h3 class="featured-title">다크 나이트: 리부트</h3>
+          <div class="meta-row">
+            <span class="meta-chip">⭐ 9.2</span>
+            <span class="meta-chip">액션 / 스릴러</span>
+            <span class="meta-chip">2시간 32분</span>
+            <span class="meta-chip">2025</span>
+            <span class="meta-chip">15세 이상</span>
+          </div>
+          <p class="featured-desc">
+            도시의 어둠 속에서 고독한 영웅이 탄생한다. 부패한 권력과 끝없는 범죄 조직에 맞서 싸우는 기사의 이야기. 압도적인 액션과 깊은 서사가 어우러진 StreamBlue 오리지널 대작.
+          </p>
+          <div class="featured-cast">
+            <span class="cast-label">출연</span>
+            <span class="cast-names">김민준, 박서연, 이도현, 최강희</span>
+          </div>
+          <div class="featured-cta">
+            <button class="btn-primary" id="featuredWatchBtn">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><polygon points="3,1 14,8 3,15" fill="#fff"/></svg>
+              시청하기
+            </button>
+            <button class="btn-outline" id="featuredAddBtn">+ 내 목록에 추가</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Meta Info Cards -->
+      <div class="meta-cards animate-on-scroll">
+        <div class="meta-card">
+          <div class="meta-icon">🎬</div>
+          <div class="meta-text">
+            <strong>감독</strong>
+            <span>박준혁</span>
+          </div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-icon">🌍</div>
+          <div class="meta-text">
+            <strong>제작국</strong>
+            <span>대한민국</span>
+          </div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-icon">🏅</div>
+          <div class="meta-text">
+            <strong>수상</strong>
+            <span>칸 영화제 수상</span>
+          </div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-icon">📺</div>
+          <div class="meta-text">
+            <strong>화질</strong>
+            <span>4K / HDR10</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Highlight Banner -->
+      <div class="highlight-banner animate-on-scroll">
+        <div class="highlight-content">
+          <h3>StreamBlue 오리지널 시리즈</h3>
+          <p>오직 StreamBlue에서만 볼 수 있는 독점 콘텐츠</p>
+          <button class="btn-white" id="originalsBtn">오리지널 전체 보기</button>
+        </div>
+        <div class="highlight-visual">
+          <div class="highlight-bg-orb"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== RECOMMENDED SECTION ========== -->
+  <section class="recommended-section" id="recommended">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <h2 class="section-title">추천 콘텐츠</h2>
+        <p class="section-desc">당신의 취향에 맞게 골라드렸어요</p>
+      </div>
+      <div class="recommended-grid" id="recommendedGrid"></div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="#home" class="footer-logo">
+            <svg width="24" height="24" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+              <circle cx="14" cy="14" r="14" fill="#1e90ff"/>
+              <polygon points="11,8 22,14 11,20" fill="#fff"/>
+            </svg>
+            StreamBlue
+          </a>
+          <p>최고의 스트리밍 경험을<br />StreamBlue와 함께하세요.</p>
+          <div class="social-links">
+            <a href="#" class="social-btn" aria-label="Instagram">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.5"/></svg>
+            </a>
+            <a href="#" class="social-btn" aria-label="YouTube">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.96-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"/></svg>
+            </a>
+            <a href="#" class="social-btn" aria-label="Twitter">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <div class="footer-col">
+            <h4>서비스</h4>
+            <ul>
+              <li><a href="#">요금제</a></li>
+              <li><a href="#">무료 체험</a></li>
+              <li><a href="#">선물하기</a></li>
+              <li><a href="#">기업 구독</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>콘텐츠</h4>
+            <ul>
+              <li><a href="#">오리지널</a></li>
+              <li><a href="#">영화</a></li>
+              <li><a href="#">드라마</a></li>
+              <li><a href="#">다큐멘터리</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>고객지원</h4>
+            <ul>
+              <li><a href="#">FAQ</a></li>
+              <li><a href="#">1:1 문의</a></li>
+              <li><a href="#">이용약관</a></li>
+              <li><a href="#">개인정보처리방침</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 StreamBlue Inc. All rights reserved.</p>
+        <p class="footer-info">사업자등록번호: 123-45-67890 | 대표: 홍길동 | 서울특별시 강남구 테헤란로 123</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========== MODAL ========== -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal" id="modal">
+      <button class="modal-close" id="modalClose" aria-label="닫기">✕</button>
+      <div class="modal-visual" id="modalVisual"></div>
+      <div class="modal-body">
+        <div class="modal-badge" id="modalBadge"></div>
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <div class="modal-meta" id="modalMeta"></div>
+        <p class="modal-desc" id="modalDesc"></p>
+        <div class="modal-actions">
+          <button class="btn-primary modal-watch-btn">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><polygon points="3,1 14,8 3,15" fill="#fff"/></svg>
+            시청하기
+          </button>
+          <button class="btn-outline modal-add-btn">+ 내 목록</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
