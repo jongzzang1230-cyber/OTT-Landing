@@ -318,12 +318,16 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   position: absolute; border-radius: 12px; overflow: hidden;
   width: 120px; box-shadow: 0 12px 32px rgba(0,0,0,.5);
   border: 1.5px solid rgba(255,255,255,.1);
+  cursor: pointer;
+  transition: transform .3s ease, box-shadow .3s ease;
 }
-.mc-img { height: 80px; }
+.mc-img { height: 80px; width: 100%; object-fit: cover; display: block; }
 .mc-info { background: rgba(13,27,42,.9); padding: 6px 8px; }
 .mc-info span { color: #fff; font-size: .75rem; font-weight: 600; }
 .mockup-card.c1 { top: 10%; left: 0; transform: rotate(-6deg); }
+.mockup-card.c1:hover { transform: rotate(-6deg) scale(1.1); box-shadow: 0 20px 48px rgba(0,0,0,.65); }
 .mockup-card.c2 { bottom: 10%; right: 0; transform: rotate(5deg); }
+.mockup-card.c2:hover { transform: rotate(5deg) scale(1.1); box-shadow: 0 20px 48px rgba(0,0,0,.65); }
 
 /* Scroll Indicator */
 .scroll-indicator {
