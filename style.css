@@ -319,15 +319,13 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   width: 130px; box-shadow: 0 12px 32px rgba(0,0,0,.5);
   border: 1.5px solid rgba(255,255,255,.15);
   cursor: pointer;
-  transition: transform .3s ease, box-shadow .3s ease, opacity .45s ease;
+  transition: top .7s cubic-bezier(.4,0,.2,1), left .7s cubic-bezier(.4,0,.2,1),
+              transform .7s cubic-bezier(.4,0,.2,1), box-shadow .3s ease, opacity .45s ease;
 }
 .mc-img { height: 86px; width: 100%; object-fit: cover; display: block; }
 .mc-info { background: rgba(13,27,42,.92); padding: 7px 9px; }
 .mc-info span { color: #fff; font-size: .75rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
-.mockup-card.c1 { top: 12px; left: 4px; transform: rotate(-8deg); }
-.mockup-card.c1:hover { transform: rotate(-8deg) scale(1.1); box-shadow: 0 20px 48px rgba(0,0,0,.65); }
-.mockup-card.c2 { bottom: 12px; right: 4px; transform: rotate(7deg); }
-.mockup-card.c2:hover { transform: rotate(7deg) scale(1.1); box-shadow: 0 20px 48px rgba(0,0,0,.65); }
+.mockup-card:hover { box-shadow: 0 20px 48px rgba(0,0,0,.65); }
 
 /* Scroll Indicator */
 .scroll-indicator {

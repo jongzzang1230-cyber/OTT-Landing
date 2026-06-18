@@ -382,40 +382,83 @@ function initScrollIndicator() {
   });
 }
 
-/* ---------- Mockup Cards random rotation ------------------- */
+/* ---------- Mockup Cards random position + content --------- */
 function initMockupCards() {
-  const c1 = document.querySelector('.mockup-card.c1');
-  const c2 = document.querySelector('.mockup-card.c2');
-  if (!c1 || !c2) return;
+  const mockup = document.querySelector('.hero-mockup');
+  const c1     = document.querySelector('.mockup-card.c1');
+  const c2     = document.querySelector('.mockup-card.c2');
+  if (!c1 || !c2 || !mockup) return;
 
-  const cards = [
-    { el: c1, img: c1.querySelector('.mc-img'), span: c1.querySelector('.mc-info span') },
-    { el: c2, img: c2.querySelector('.mc-img'), span: c2.querySelector('.mc-info span') },
-  ];
+  const CW = 130, CH = 114, PAD = 6;
+  const ROTS = [-11, -8, -6, -5, 5, 6, 8, 11];
 
-  function pickTwo() {
-    const pool = [...CONTENT_DATA].sort(() => Math.random() - .5);
-    return [pool[0], pool[1]];
+  function getSlots() {
+    const mw = mockup.offsetWidth, mh = mockup.offsetHeight;
+    return [
+      { top: PAD,               left: PAD },
+      { top: PAD,               left: mw - CW - PAD },
+      { top: (mh - CH) / 2,    left: PAD },
+      { top: (mh - CH) / 2,    left: mw - CW - PAD },
+      { top: mh - CH - PAD,    left: PAD },
+      { top: mh - CH - PAD,    left: mw - CW - PAD },
+    ];
   }
 
-  function setCard(card, data) {
-    card.el.style.opacity = '0';
+  const state = [
+    { el: c1, img: c1.querySelector('.mc-img'), span: c1.querySelector('.mc-info span'), rot: -8 },
+    { el: c2, img: c2.querySelector('.mc-img'), span: c2.querySelector('.mc-info span'), rot: 7 },
+  ];
+
+  /* 호버 시 현재 rotation 유지하며 scale */
+  state.forEach(s => {
+    s.el.addEventListener('mouseenter', () => {
+      s.el.style.transform = `rotate(${s.rot}deg) scale(1.1)`;
+    });
+    s.el.addEventListener('mouseleave', () => {
+      s.el.style.transform = `rotate(${s.rot}deg)`;
+    });
+  });
+
+  function applyPos(s, pos, rot) {
+    s.rot = rot;
+    s.el.style.top       = pos.top  + 'px';
+    s.el.style.left      = pos.left + 'px';
+    s.el.style.transform = `rotate(${rot}deg)`;
+  }
+
+  function applyContent(s, data) {
+    s.el.style.opacity = '0';
     setTimeout(() => {
-      card.img.src          = data.img;
-      card.img.alt          = data.title;
-      card.span.textContent = data.title;
-      card.el.style.opacity = '1';
+      s.img.src          = data.img;
+      s.img.alt          = data.title;
+      s.span.textContent = data.title;
+      s.el.style.opacity = '1';
     }, 460);
   }
 
-  function rotate() {
-    const [d1, d2] = pickTwo();
-    setCard(cards[0], d1);
-    setTimeout(() => setCard(cards[1], d2), 220);
+  function randomize(withContent) {
+    const slots = [...getSlots()].sort(() => Math.random() - .5);
+    const rots  = [...ROTS].sort(() => Math.random() - .5);
+    const data  = [...CONTENT_DATA].sort(() => Math.random() - .5);
+    state.forEach((s, i) => {
+      applyPos(s, slots[i], rots[i]);
+      if (withContent) setTimeout(() => applyContent(s, data[i]), i * 180);
+    });
   }
 
-  rotate();
-  setInterval(rotate, 4000);
+  /* 초기 배치: 트랜지션 없이 즉시 위치 설정 */
+  state.forEach(s => { s.el.style.transition = 'none'; s.el.style.opacity = '0'; });
+  randomize(false);
+  const initData = [...CONTENT_DATA].sort(() => Math.random() - .5);
+  state.forEach((s, i) => {
+    s.img.src = initData[i].img; s.img.alt = initData[i].title;
+    s.span.textContent = initData[i].title;
+  });
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    state.forEach(s => { s.el.style.transition = ''; s.el.style.opacity = '1'; });
+  }));
+
+  setInterval(() => randomize(true), 5000);
 }
 
 /* ---------- Particle Canvas (Interaction #4) --------------- */
