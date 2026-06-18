@@ -649,6 +649,12 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   .footer-links { grid-template-columns: 1fr; gap: 28px; }
   .hero-stats { flex-wrap: wrap; }
   .stat-divider { display: none; }
-  .filter-tabs { gap: 6px; }
-  .filter-tab { padding: 7px 16px; font-size: .8rem; }
+  .filter-tabs {
+    flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start;
+    padding-bottom: 6px; gap: 8px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .filter-tabs::-webkit-scrollbar { display: none; }
+  .filter-tab { flex-shrink: 0; padding: 7px 18px; font-size: .85rem; }
 }
