@@ -333,8 +333,12 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
 .card-poster {
   position: relative; height: 200px; overflow: hidden;
+  background: #1a2f47;
 }
-.card-poster-bg { width: 100%; height: 100%; transition: transform .4s ease; }
+.card-poster-bg {
+  width: 100%; height: 100%; display: block;
+  object-fit: cover; transition: transform .4s ease;
+}
 .content-card:hover .card-poster-bg { transform: scale(1.08); }
 
 .card-rank {
@@ -475,8 +479,11 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   transition: var(--transition);
 }
 .rec-card:hover { transform: translateY(-6px); box-shadow: 0 14px 40px rgba(30,144,255,.18); border-color: rgba(30,144,255,.3); }
-.rec-poster { height: 240px; position: relative; overflow: hidden; }
-.rec-poster-bg { width: 100%; height: 100%; transition: transform .4s ease; }
+.rec-poster { height: 240px; position: relative; overflow: hidden; background: #1a2f47; }
+.rec-poster-bg {
+  width: 100%; height: 100%; display: block;
+  object-fit: cover; transition: transform .4s ease;
+}
 .rec-card:hover .rec-poster-bg { transform: scale(1.07); }
 .rec-overlay {
   position: absolute; inset: 0;

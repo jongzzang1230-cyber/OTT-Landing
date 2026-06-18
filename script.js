@@ -15,36 +15,42 @@ const CONTENT_DATA = [
   {
     id: 1, title: '다크 나이트: 리부트', genre: '액션', filter: 'action',
     rating: '9.2', year: '2025', duration: '2시간 32분', age: '15세',
+    img: 'https://picsum.photos/seed/darkcity/600/400',
     bg: 'g1', rank: 1, isNew: false,
     desc: '도시의 어둠 속에서 탄생한 고독한 영웅이 부패한 권력에 맞선다. 압도적인 액션과 깊은 서사가 만나다.'
   },
   {
     id: 2, title: '사랑의 계절', genre: '드라마', filter: 'drama',
     rating: '8.7', year: '2025', duration: '1시간 45분', age: '12세',
+    img: 'https://picsum.photos/seed/autumn/600/400',
     bg: 'g2', rank: 2, isNew: true,
     desc: '서로 다른 계절을 사는 두 사람의 엇갈린 사랑 이야기. 감동의 물결이 넘치는 로맨스 드라마.'
   },
   {
     id: 3, title: '우주의 끝에서', genre: 'SF', filter: 'sci-fi',
     rating: '9.0', year: '2024', duration: '2시간 10분', age: '12세',
+    img: 'https://picsum.photos/seed/cosmos/600/400',
     bg: 'g3', rank: 3, isNew: false,
     desc: '우주 탐험대가 블랙홀 너머에서 발견한 고대 문명. 인류의 기원을 밝힐 단서를 찾는 SF 대서사.'
   },
   {
     id: 4, title: '마지막 사무라이의 귀환', genre: '액션', filter: 'action',
     rating: '8.9', year: '2024', duration: '2시간 05분', age: '15세',
+    img: 'https://picsum.photos/seed/warrior/600/400',
     bg: 'g4', rank: 4, isNew: true,
     desc: '전설의 검사가 복수를 위해 돌아왔다. 전통과 현대가 충돌하는 거대한 역사 액션 서사.'
   },
   {
     id: 5, title: '웃음 폭탄 가족', genre: '코미디', filter: 'comedy',
     rating: '8.3', year: '2025', duration: '1시간 38분', age: '전체',
+    img: 'https://picsum.photos/seed/sunny/600/400',
     bg: 'g5', rank: 5, isNew: false,
     desc: '천방지축 가족이 만들어내는 웃음과 감동의 연속. 온 가족이 함께 즐길 수 있는 명랑 코미디.'
   },
   {
     id: 6, title: '공포의 저택 시즌2', genre: '호러', filter: 'drama',
     rating: '8.6', year: '2025', duration: '각 50분 × 8화', age: '18세',
+    img: 'https://picsum.photos/seed/haunted/600/400',
     bg: 'g6', rank: 6, isNew: true,
     desc: '그 집에는 비밀이 있다. 더욱 강렬해진 공포와 반전이 기다리는 시즌2. 절대 혼자 보지 마세요.'
   }
@@ -53,22 +59,30 @@ const CONTENT_DATA = [
 const RECOMMENDED_DATA = [
   {
     id: 101, title: '비밀의 정원', genre: '미스터리', filter: 'drama',
-    rating: '9.1', year: '2024', bg: 'g7',
+    rating: '9.1', year: '2024',
+    img: 'https://picsum.photos/seed/garden/400/560',
+    bg: 'g7',
     desc: '아무도 모르는 비밀이 숨겨진 정원. 그 안에서 시작되는 의문스러운 사건들.'
   },
   {
     id: 102, title: '타임리프: 다시 한번', genre: 'SF', filter: 'sci-fi',
-    rating: '8.8', year: '2025', bg: 'g8',
+    rating: '8.8', year: '2025',
+    img: 'https://picsum.photos/seed/timeloop/400/560',
+    bg: 'g8',
     desc: '과거로 돌아갈 수 있다면 무엇을 바꾸겠는가? 시간 여행의 역설을 다룬 SF 걸작.'
   },
   {
     id: 103, title: '헌터즈: 시작', genre: '액션', filter: 'action',
-    rating: '8.5', year: '2024', bg: 'g9',
+    rating: '8.5', year: '2024',
+    img: 'https://picsum.photos/seed/hunters/400/560',
+    bg: 'g9',
     desc: '최강 용병팀이 결성됐다. 세계 최대 위협에 맞서는 엘리트 요원들의 활약.'
   },
   {
     id: 104, title: '블루문의 밤', genre: '로맨스', filter: 'drama',
-    rating: '8.4', year: '2025', bg: 'g10',
+    rating: '8.4', year: '2025',
+    img: 'https://picsum.photos/seed/moonlight/400/560',
+    bg: 'g10',
     desc: '12년마다 뜨는 블루문 아래서 만나는 두 사람. 운명적인 사랑의 시작.'
   }
 ];
@@ -93,7 +107,7 @@ function buildContentGrid() {
   grid.innerHTML = CONTENT_DATA.map(c => `
     <div class="content-card animate-on-scroll" data-filter="${c.filter}" data-id="${c.id}">
       <div class="card-poster">
-        <div class="card-poster-bg ${c.bg}"></div>
+        <img class="card-poster-bg" src="${c.img}" alt="${c.title}" loading="lazy" />
         <div class="card-rank">#${c.rank}</div>
         ${c.isNew ? '<div class="card-new-badge">NEW</div>' : ''}
         <div class="card-overlay">
@@ -128,7 +142,7 @@ function buildRecommendedGrid() {
   grid.innerHTML = RECOMMENDED_DATA.map(r => `
     <div class="rec-card animate-on-scroll" data-id="${r.id}">
       <div class="rec-poster">
-        <div class="rec-poster-bg ${r.bg}"></div>
+        <img class="rec-poster-bg" src="${r.img}" alt="${r.title}" loading="lazy" />
         <div class="rec-overlay">
           <div class="rec-play">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polygon points="3,1 14,8 3,15" fill="#fff"/></svg>
@@ -272,7 +286,11 @@ function initModal() {
 
 function openModal(data) {
   const overlay = document.getElementById('modalOverlay');
-  document.getElementById('modalVisual').className = `modal-visual ${data.bg}`;
+  const visual = document.getElementById('modalVisual');
+  visual.className = 'modal-visual';
+  visual.innerHTML = data.img
+    ? `<img src="${data.img}" alt="${data.title}" style="width:100%;height:100%;object-fit:cover;display:block;" />`
+    : '';
   document.getElementById('modalBadge').textContent = data.genre || '';
   document.getElementById('modalTitle').textContent = data.title;
   document.getElementById('modalMeta').innerHTML = [
