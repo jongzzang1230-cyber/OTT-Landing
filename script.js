@@ -296,24 +296,97 @@ function initModal() {
   });
 }
 
+/* ---------- Ranking Panel ---------------------------------- */
+function buildRankingPanel(nickname) {
+  const panel = document.getElementById('rankingPanel');
+  const all   = [...CONTENT_DATA, ...RECOMMENDED_DATA]
+    .sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating));
+  const top3  = all.slice(0, 3);
+  const rest  = all.slice(3);
+
+  const BADGES = [
+    { label: '🔥 HOT', cls: 'hot' }, { label: '▲ UP', cls: 'up' },
+    { label: 'NEW',    cls: 'new' }, { label: '▲ UP', cls: 'up' },
+    { label: '🔥 HOT', cls: 'hot' }, { label: 'NEW',   cls: 'new' },
+    { label: '▲ UP',  cls: 'up'  },
+  ];
+
+  panel.innerHTML = `
+    <div class="ranking-welcome">
+      <p class="rw-greeting">🎬 환영합니다</p>
+      <h2 class="rw-title"><span>${nickname}</span>님, 오늘 뭐 볼까요?</h2>
+      <p class="rw-sub">이번 주 StreamBlue 인기 콘텐츠 TOP ${all.length}</p>
+    </div>
+    <div class="ranking-top3">
+      ${top3.map((d, i) => `
+        <div class="rank-card-top" data-id="${d.id}">
+          <img src="${d.img}" alt="${d.title}" loading="lazy" />
+          <div class="rct-overlay"></div>
+          <div class="rct-num">${i + 1}</div>
+          <div class="rct-info">
+            <div class="rct-title">${d.title}</div>
+            <div class="rct-meta">
+              <span class="rct-genre">${d.genre}</span>
+              <span class="rct-rating">⭐ ${d.rating}</span>
+            </div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="ranking-list">
+      ${rest.map((d, i) => `
+        <div class="rank-row" data-id="${d.id}">
+          <span class="rank-row-num">${i + 4}</span>
+          <img class="rank-row-img" src="${d.img}" alt="${d.title}" loading="lazy" />
+          <div class="rank-row-info">
+            <div class="rank-row-title">${d.title}</div>
+            <div class="rank-row-sub">
+              <span class="rank-row-genre">${d.genre}</span>
+              <span class="rank-row-rating">⭐ ${d.rating}</span>
+              <span class="rank-row-year">${d.year}</span>
+            </div>
+          </div>
+          <span class="rank-badge ${BADGES[i].cls}">${BADGES[i].label}</span>
+        </div>
+      `).join('')}
+    </div>
+  `;
+
+  panel.querySelectorAll('[data-id]').forEach(el => {
+    el.addEventListener('click', () => {
+      const id   = Number(el.dataset.id);
+      const data = [...CONTENT_DATA, ...RECOMMENDED_DATA].find(d => d.id === id);
+      if (data) openModal(data);
+    });
+  });
+}
+
 /* ---------- Auth State ------------------------------------- */
 async function initAuthState() {
   const guest   = document.getElementById('navGuest');
   const userEl  = document.getElementById('navUser');
   const welcome = document.getElementById('navWelcome');
 
+  const heroInner    = document.getElementById('heroInner');
+  const rankingPanel = document.getElementById('rankingPanel');
+
   function applyUser(user) {
     currentSession = user;
     const nickname = user.user_metadata?.nickname || user.email.split('@')[0];
-    guest.style.display  = 'none';
-    userEl.style.display = 'flex';
-    welcome.textContent  = `환영합니다! ${nickname}`;
+    guest.style.display        = 'none';
+    userEl.style.display       = 'flex';
+    welcome.textContent        = `환영합니다! ${nickname}`;
+    heroInner.style.display    = 'none';
+    rankingPanel.style.display = 'block';
+    buildRankingPanel(nickname);
   }
 
   function applyGuest() {
-    currentSession = null;
-    guest.style.display  = 'flex';
-    userEl.style.display = 'none';
+    currentSession             = null;
+    guest.style.display        = 'flex';
+    userEl.style.display       = 'none';
+    heroInner.style.display    = '';
+    rankingPanel.style.display = 'none';
   }
 
   const { data: { session } } = await _supabase.auth.getSession();
