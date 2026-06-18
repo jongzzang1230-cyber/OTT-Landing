@@ -260,6 +260,27 @@
       transform: translateX(-2px);
     }
 
+    /* 무료 체험 배너 */
+    .trial-banner {
+      display: none;
+      align-items: center; gap: 12px;
+      background: rgba(30,144,255,.12);
+      border: 1.5px solid rgba(30,144,255,.35);
+      border-radius: 12px; padding: 13px 15px;
+      margin-bottom: 20px;
+    }
+    .trial-banner .trial-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .trial-banner strong { display: block; color: #fff; font-size: .88rem; }
+    .trial-banner span   { color: rgba(255,255,255,.5); font-size: .75rem; }
+    .trial-badge {
+      display: none; align-items: center; gap: 6px;
+      font-size: .72rem; font-weight: 700; color: var(--blue);
+      background: rgba(30,144,255,.12);
+      border: 1px solid rgba(30,144,255,.3);
+      border-radius: 20px; padding: 3px 10px;
+      margin-bottom: 6px; width: fit-content;
+    }
+
     /* 반응형 */
     @media (max-width: 520px) {
       .login-header { padding: 18px 20px; }
@@ -295,8 +316,18 @@
 
   <main class="login-main">
     <div class="login-card">
+      <div class="trial-badge" id="trialBadge">🎁 30일 무료 체험</div>
       <h1>회원가입</h1>
-      <p class="subtitle">StreamBlue와 함께 무한한 콘텐츠를 즐겨보세요</p>
+      <p class="subtitle" id="signupSubtitle">StreamBlue와 함께 무한한 콘텐츠를 즐겨보세요</p>
+
+      <!-- 무료 체험 배너 -->
+      <div class="trial-banner" id="trialBanner">
+        <div class="trial-icon">🎁</div>
+        <div>
+          <strong>30일 무료 체험</strong>
+          <span>신용카드 불필요 · 언제든지 해지 가능</span>
+        </div>
+      </div>
 
       <!-- 스텝 인디케이터 -->
       <div class="steps" id="steps">
@@ -377,6 +408,7 @@
           <label for="plan">요금제 선택</label>
           <select id="plan">
             <option value="">요금제를 선택하세요</option>
+            <option value="trial" id="trialOption" style="display:none">🎁 30일 무료 체험 후 스탠다드 ₩13,900/월</option>
             <option value="basic">베이직 - ₩9,900/월 (HD, 1개 기기)</option>
             <option value="standard">스탠다드 - ₩13,900/월 (FHD, 2개 기기)</option>
             <option value="premium">프리미엄 - ₩17,900/월 (4K, 5개 기기)</option>
@@ -461,6 +493,16 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase.js"></script>
   <script>
+    /* ── 무료 체험 모드 감지 ── */
+    const isTrial = new URLSearchParams(location.search).get('trial') === '1';
+    if (isTrial) {
+      document.getElementById('trialBadge').style.display  = 'flex';
+      document.getElementById('trialBanner').style.display = 'flex';
+      document.getElementById('signupSubtitle').textContent = '30일 무료 체험으로 지금 바로 시작하세요';
+      document.getElementById('trialOption').style.display = '';
+      document.getElementById('plan').value = 'trial';
+    }
+
     /* ── 유틸 ── */
     const $ = id => document.getElementById(id);
     const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -626,8 +668,9 @@
       btn.classList.remove('loading');
       document.getElementById('steps').style.display = 'none';
       ['panel1','panel2','panel3'].forEach(id => $(id).classList.remove('active'));
-      $('welcomeMsg').innerHTML =
-        `<strong style="color:#fff">${nickname}</strong>님, StreamBlue 회원이 되셨습니다.<br />지금 바로 무한한 콘텐츠를 즐겨보세요.`;
+      $('welcomeMsg').innerHTML = isTrial
+        ? `<strong style="color:#fff">${nickname}</strong>님의 30일 무료 체험이 시작됩니다! 🎉<br/>지금 바로 무한한 콘텐츠를 즐겨보세요.`
+        : `<strong style="color:#fff">${nickname}</strong>님, StreamBlue 회원이 되셨습니다.<br />지금 바로 무한한 콘텐츠를 즐겨보세요.`;
       $('successPanel').classList.add('active');
       document.querySelector('.login-row').style.display = 'none';
     });

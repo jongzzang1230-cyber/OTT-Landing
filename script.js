@@ -276,7 +276,9 @@ function initModal() {
   document.getElementById('loginBtn').addEventListener('click', () => {
     window.location.href = 'login.html';
   });
-  document.getElementById('trialBtn').addEventListener('click', () => showToast('🎉 30일 무료 체험을 시작합니다!'));
+  document.getElementById('trialBtn').addEventListener('click', () => {
+    window.location.href = 'signup.html?trial=1';
+  });
   document.getElementById('originalsBtn').addEventListener('click', () => showToast('오리지널 콘텐츠 목록을 불러옵니다'));
 
   document.querySelector('.modal-watch-btn').addEventListener('click', () => {
