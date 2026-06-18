@@ -186,11 +186,28 @@
     }
     .signup-row a:hover { color: #64b5f6; }
 
+    /* 뒤로가기 버튼 */
+    .btn-back-page {
+      display: flex; align-items: center; gap: 7px;
+      color: rgba(255,255,255,.65); font-size: .88rem; font-weight: 500;
+      background: rgba(255,255,255,.08);
+      border: 1.5px solid rgba(255,255,255,.15);
+      border-radius: 50px; padding: 8px 16px;
+      cursor: pointer; transition: all .25s; font-family: inherit;
+      margin-right: 20px; flex-shrink: 0;
+    }
+    .btn-back-page:hover {
+      color: #fff; border-color: rgba(255,255,255,.4);
+      background: rgba(255,255,255,.13);
+      transform: translateX(-2px);
+    }
+
     /* 모바일 */
     @media (max-width: 480px) {
       .login-header { padding: 18px 20px; }
       .login-card { padding: 32px 22px; border-radius: 18px; }
       .social-login { flex-direction: column; }
+      .btn-back-page span { display: none; }
     }
   </style>
 </head>
@@ -204,6 +221,12 @@
 
   <!-- 헤더 -->
   <header class="login-header">
+    <button class="btn-back-page" onclick="history.length > 1 ? history.back() : location.href='index.html'">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M10 12L6 8l4-4"/>
+      </svg>
+      <span>뒤로가기</span>
+    </button>
     <a href="index.html" class="login-logo">
       <svg width="26" height="26" viewBox="0 0 28 28" fill="none" aria-hidden="true">
         <circle cx="14" cy="14" r="14" fill="#1e90ff"/>
