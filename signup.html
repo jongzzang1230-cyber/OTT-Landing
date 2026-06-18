@@ -698,8 +698,8 @@
       document.getElementById('steps').style.display = 'none';
       ['panel1','panel2','panel3'].forEach(id => $(id).classList.remove('active'));
       $('welcomeMsg').innerHTML = isTrial
-        ? `<strong style="color:#fff">${nickname}</strong>님의 30일 무료 체험이 시작됩니다! 🎉<br/>지금 바로 무한한 콘텐츠를 즐겨보세요.`
-        : `<strong style="color:#fff">${nickname}</strong>님, StreamBlue 회원이 되셨습니다.<br />지금 바로 무한한 콘텐츠를 즐겨보세요.`;
+        ? `<strong style="color:#fff">${nickname}</strong>님의 30일 무료 체험이 시작됩니다! 🎉<br/>가입하신 이메일(<strong style="color:#64b5f6">${email}</strong>)로<br/>인증 링크를 발송했습니다.<br/><span style="font-size:.82rem;color:rgba(255,255,255,.4)">이메일 인증 후 로그인하세요</span>`
+        : `<strong style="color:#fff">${nickname}</strong>님, StreamBlue 회원이 되셨습니다!<br/>가입하신 이메일(<strong style="color:#64b5f6">${email}</strong>)로<br/>인증 링크를 발송했습니다.<br/><span style="font-size:.82rem;color:rgba(255,255,255,.4)">이메일 인증 후 로그인하세요</span>`;
       $('successPanel').classList.add('active');
       document.querySelector('.login-row').style.display = 'none';
     });
