@@ -147,6 +147,55 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 .logout-item { color: #f87171; }
 .logout-item:hover { background: rgba(248,113,113,.12); color: #ff6b6b; }
+.withdraw-item { color: #f87171; }
+.withdraw-item:hover { background: rgba(248,113,113,.12); color: #ff6b6b; }
+
+/* 계정 탈퇴 확인 모달 */
+.withdraw-overlay {
+  display: none; position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,.65); backdrop-filter: blur(6px);
+  align-items: center; justify-content: center;
+}
+.withdraw-overlay.open { display: flex; }
+.withdraw-modal {
+  background: #1a2f47; border: 1.5px solid rgba(248,113,113,.35);
+  border-radius: 20px; padding: 40px 36px; max-width: 360px; width: 90%;
+  text-align: center;
+  animation: wdIn .3s cubic-bezier(.4,0,.2,1) both;
+}
+@keyframes wdIn {
+  from { opacity:0; transform: scale(.93) translateY(12px); }
+  to   { opacity:1; transform: scale(1)   translateY(0); }
+}
+.withdraw-icon { font-size: 2.8rem; margin-bottom: 16px; }
+.withdraw-modal h3 { color: #fff; font-size: 1.15rem; font-weight: 800; margin-bottom: 12px; }
+.withdraw-modal p  { color: rgba(255,255,255,.55); font-size: .88rem; line-height: 1.7; margin-bottom: 28px; }
+.withdraw-modal p strong { color: #f87171; }
+.withdraw-actions { display: flex; gap: 12px; }
+.withdraw-cancel {
+  flex: 1; padding: 12px; border-radius: 12px;
+  background: rgba(255,255,255,.08); border: 1.5px solid rgba(255,255,255,.15);
+  color: rgba(255,255,255,.7); font-size: .92rem; font-weight: 600;
+  cursor: pointer; transition: background .2s; font-family: inherit;
+}
+.withdraw-cancel:hover { background: rgba(255,255,255,.14); color: #fff; }
+.withdraw-confirm {
+  flex: 1; padding: 12px; border-radius: 12px;
+  background: #ef4444; border: none;
+  color: #fff; font-size: .92rem; font-weight: 700;
+  cursor: pointer; transition: background .2s; font-family: inherit;
+  position: relative;
+}
+.withdraw-confirm:hover { background: #dc2626; }
+.withdraw-confirm.loading { pointer-events: none; opacity: .75; }
+.withdraw-spinner {
+  display: none; width: 16px; height: 16px;
+  border: 2px solid rgba(255,255,255,.4); border-top-color: #fff;
+  border-radius: 50%; animation: spin .7s linear infinite;
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+}
+.withdraw-confirm.loading .withdraw-label { visibility: hidden; }
+.withdraw-confirm.loading .withdraw-spinner { display: block; }
 
 .btn-hero-primary {
   display: inline-flex; align-items: center; gap: 10px;

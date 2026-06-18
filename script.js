@@ -416,6 +416,40 @@ async function initAuthState() {
       setTimeout(() => location.reload(), 900);
     });
   }
+
+  /* 계정 탈퇴 */
+  const withdrawBtn     = document.getElementById('withdrawBtn');
+  const withdrawOverlay = document.getElementById('withdrawOverlay');
+  const withdrawCancel  = document.getElementById('withdrawCancel');
+  const withdrawConfirm = document.getElementById('withdrawConfirm');
+
+  if (withdrawBtn) {
+    withdrawBtn.addEventListener('click', () => {
+      dropdown.classList.remove('open');
+      withdrawOverlay.classList.add('open');
+    });
+  }
+  if (withdrawCancel) {
+    withdrawCancel.addEventListener('click', () => withdrawOverlay.classList.remove('open'));
+  }
+  withdrawOverlay && withdrawOverlay.addEventListener('click', (e) => {
+    if (e.target === withdrawOverlay) withdrawOverlay.classList.remove('open');
+  });
+  if (withdrawConfirm) {
+    withdrawConfirm.addEventListener('click', async () => {
+      withdrawConfirm.classList.add('loading');
+      const { error } = await _supabase.rpc('delete_user');
+      if (error) {
+        withdrawConfirm.classList.remove('loading');
+        showToast('탈퇴 처리 중 오류가 발생했습니다');
+        withdrawOverlay.classList.remove('open');
+        return;
+      }
+      await _supabase.auth.signOut();
+      showToast('계정이 삭제되었습니다. 이용해 주셔서 감사합니다.');
+      setTimeout(() => location.reload(), 1500);
+    });
+  }
 }
 
 function openModal(data) {

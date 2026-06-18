@@ -46,6 +46,7 @@
               <a href="#" class="dropdown-item">⚙️ 설정</a>
               <div class="dropdown-divider"></div>
               <button class="dropdown-item logout-item" id="logoutBtn">🚪 로그아웃</button>
+              <button class="dropdown-item withdraw-item" id="withdrawBtn">🗑️ 계정 탈퇴</button>
             </div>
           </div>
         </div>
@@ -357,6 +358,22 @@
 
   <!-- Toast -->
   <div class="toast" id="toast"></div>
+
+  <!-- 계정 탈퇴 확인 모달 -->
+  <div class="withdraw-overlay" id="withdrawOverlay">
+    <div class="withdraw-modal">
+      <div class="withdraw-icon">⚠️</div>
+      <h3>계정을 탈퇴하시겠습니까?</h3>
+      <p>탈퇴하면 모든 데이터가 <strong>영구 삭제</strong>되며<br/>복구할 수 없습니다.</p>
+      <div class="withdraw-actions">
+        <button class="withdraw-cancel" id="withdrawCancel">취소</button>
+        <button class="withdraw-confirm" id="withdrawConfirm">
+          <span class="withdraw-label">탈퇴하기</span>
+          <span class="withdraw-spinner"></span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase.js"></script>
