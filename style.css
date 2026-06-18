@@ -437,8 +437,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
 /* ── Ranking Panel (로그인 후) ─────────────────────────────── */
 .ranking-panel {
-  width: 100%; max-width: 1100px; margin: 0 auto;
-  position: relative; z-index: 2; padding: 0 24px;
+  width: 100%; max-width: 1200px; margin: 0 auto;
+  position: relative; z-index: 2; padding: 0;
 }
 .ranking-welcome { margin-bottom: 32px; }
 .rw-greeting { font-size: .78rem; color: rgba(255,255,255,.5); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 8px; }
@@ -837,6 +837,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
    ============================================================ */
 @media (max-width: 1247px) {
   .hero-inner { padding: 0 24px; }
+  .ranking-panel { padding: 0 24px; }
 }
 
 @media (max-width: 1024px) {
