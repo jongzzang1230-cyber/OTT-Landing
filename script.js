@@ -100,6 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeroButtons();
   initAuthState();
   initScrollIndicator();
+  initMockupCards();
 });
 
 /* ---------- Build Content Grid ----------------------------- */
@@ -379,6 +380,42 @@ function initScrollIndicator() {
   document.getElementById('scrollIndicator').addEventListener('click', () => {
     document.getElementById('content').scrollIntoView({ behavior: 'smooth' });
   });
+}
+
+/* ---------- Mockup Cards random rotation ------------------- */
+function initMockupCards() {
+  const c1 = document.querySelector('.mockup-card.c1');
+  const c2 = document.querySelector('.mockup-card.c2');
+  if (!c1 || !c2) return;
+
+  const cards = [
+    { el: c1, img: c1.querySelector('.mc-img'), span: c1.querySelector('.mc-info span') },
+    { el: c2, img: c2.querySelector('.mc-img'), span: c2.querySelector('.mc-info span') },
+  ];
+
+  function pickTwo() {
+    const pool = [...CONTENT_DATA].sort(() => Math.random() - .5);
+    return [pool[0], pool[1]];
+  }
+
+  function setCard(card, data) {
+    card.el.style.opacity = '0';
+    setTimeout(() => {
+      card.img.src          = data.img;
+      card.img.alt          = data.title;
+      card.span.textContent = data.title;
+      card.el.style.opacity = '1';
+    }, 460);
+  }
+
+  function rotate() {
+    const [d1, d2] = pickTwo();
+    setCard(cards[0], d1);
+    setTimeout(() => setCard(cards[1], d2), 220);
+  }
+
+  rotate();
+  setInterval(rotate, 4000);
 }
 
 /* ---------- Particle Canvas (Interaction #4) --------------- */
