@@ -260,6 +260,19 @@
       transform: translateX(-2px);
     }
 
+    /* 로그인 필요 안내 배너 */
+    .auth-notice {
+      display: none;
+      align-items: center; gap: 12px;
+      background: rgba(248,113,113,.1);
+      border: 1.5px solid rgba(248,113,113,.35);
+      border-radius: 12px; padding: 13px 15px;
+      margin-bottom: 20px;
+    }
+    .auth-notice .auth-icon { font-size: 1.3rem; flex-shrink: 0; }
+    .auth-notice strong { display: block; color: #fff; font-size: .88rem; }
+    .auth-notice span   { color: rgba(255,255,255,.5); font-size: .75rem; }
+
     /* 무료 체험 배너 */
     .trial-banner {
       display: none;
@@ -316,6 +329,15 @@
 
   <main class="login-main">
     <div class="login-card">
+      <!-- 로그인 필요 안내 -->
+      <div class="auth-notice" id="authNotice">
+        <div class="auth-icon">🔒</div>
+        <div>
+          <strong>로그인이 필요한 서비스입니다</strong>
+          <span>회원가입 후 모든 콘텐츠를 이용하세요</span>
+        </div>
+      </div>
+
       <div class="trial-badge" id="trialBadge">🎁 30일 무료 체험</div>
       <h1>회원가입</h1>
       <p class="subtitle" id="signupSubtitle">StreamBlue와 함께 무한한 콘텐츠를 즐겨보세요</p>
@@ -493,8 +515,15 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase.js"></script>
   <script>
-    /* ── 무료 체험 모드 감지 ── */
-    const isTrial = new URLSearchParams(location.search).get('trial') === '1';
+    /* ── URL 파라미터 감지 ── */
+    const params  = new URLSearchParams(location.search);
+    const isTrial = params.get('trial') === '1';
+    const isAuth  = params.get('auth')  === '1';
+
+    if (isAuth) {
+      document.getElementById('authNotice').style.display = 'flex';
+      document.getElementById('signupSubtitle').textContent = '회원가입 후 모든 콘텐츠를 이용하세요';
+    }
     if (isTrial) {
       document.getElementById('trialBadge').style.display  = 'flex';
       document.getElementById('trialBanner').style.display = 'flex';

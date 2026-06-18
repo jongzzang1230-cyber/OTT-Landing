@@ -87,6 +87,9 @@ const RECOMMENDED_DATA = [
   }
 ];
 
+/* ---------- Auth session cache ----------------------------- */
+let currentSession = null;
+
 /* ---------- DOM ready -------------------------------------- */
 document.addEventListener('DOMContentLoaded', () => {
   buildContentGrid();
@@ -269,6 +272,7 @@ function initModal() {
     openModal(CONTENT_DATA[0]);
   });
   document.getElementById('featuredAddBtn').addEventListener('click', () => {
+    if (!requireAuth()) return;
     showToast('✓ 내 목록에 추가되었습니다');
   });
 
@@ -282,10 +286,12 @@ function initModal() {
   document.getElementById('originalsBtn').addEventListener('click', () => showToast('오리지널 콘텐츠 목록을 불러옵니다'));
 
   document.querySelector('.modal-watch-btn').addEventListener('click', () => {
+    if (!requireAuth()) return;
     closeModal();
     showToast('▶ 재생을 시작합니다...');
   });
   document.querySelector('.modal-add-btn').addEventListener('click', () => {
+    if (!requireAuth()) return;
     showToast('✓ 내 목록에 추가되었습니다');
   });
 }
@@ -297,6 +303,7 @@ async function initAuthState() {
   const welcome = document.getElementById('navWelcome');
 
   function applyUser(user) {
+    currentSession = user;
     const nickname = user.user_metadata?.nickname || user.email.split('@')[0];
     guest.style.display  = 'none';
     userEl.style.display = 'flex';
@@ -304,6 +311,7 @@ async function initAuthState() {
   }
 
   function applyGuest() {
+    currentSession = null;
     guest.style.display  = 'flex';
     userEl.style.display = 'none';
   }
@@ -360,6 +368,14 @@ function openModal(data) {
 function closeModal() {
   document.getElementById('modalOverlay').classList.remove('open');
   document.body.style.overflow = '';
+}
+
+/* ---------- Auth guard ------------------------------------- */
+function requireAuth() {
+  if (currentSession) return true;
+  showToast('로그인이 필요한 서비스입니다.');
+  setTimeout(() => { window.location.href = 'signup.html?auth=1'; }, 1000);
+  return false;
 }
 
 /* ---------- Toast notification ----------------------------- */
@@ -440,9 +456,11 @@ function initMockupCards() {
 
   mdClose.addEventListener('click', closeDetail);
   document.getElementById('mdPlay').addEventListener('click', () => {
+    if (!requireAuth()) return;
     closeDetail(); showToast('▶ 재생을 시작합니다...');
   });
   document.getElementById('mdAdd').addEventListener('click', () => {
+    if (!requireAuth()) return;
     showToast('✓ 내 목록에 추가되었습니다');
   });
 
