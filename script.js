@@ -271,7 +271,9 @@ function initModal() {
   });
 
   // Other nav buttons
-  document.getElementById('loginBtn').addEventListener('click', () => showToast('로그인 페이지로 이동합니다'));
+  document.getElementById('loginBtn').addEventListener('click', () => {
+    window.location.href = 'login.html';
+  });
   document.getElementById('trialBtn').addEventListener('click', () => showToast('🎉 30일 무료 체험을 시작합니다!'));
   document.getElementById('originalsBtn').addEventListener('click', () => showToast('오리지널 콘텐츠 목록을 불러옵니다'));
 
